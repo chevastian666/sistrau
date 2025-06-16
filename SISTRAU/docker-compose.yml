@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: sistrau-postgres
+    environment:
+      POSTGRES_USER: sistrau_user
+      POSTGRES_PASSWORD: sistrau_password
+      POSTGRES_DB: sistrau
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - sistrau-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: sistrau-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sistrau-network
+
+  # MQTT Broker (for IoT devices)
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: sistrau-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    networks:
+      - sistrau-network
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: sistrau-backend
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sistrau
+      DB_USER: sistrau_user
+      DB_PASSWORD: sistrau_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MQTT_BROKER_URL: mqtt://mosquitto:1883
+      JWT_SECRET: your_super_secret_jwt_key_change_this_in_production
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      - postgres
+      - redis
+      - mosquitto
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - sistrau-network
+    command: npm run dev
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    container_name: sistrau-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+      VITE_SOCKET_URL: http://localhost:3001
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - sistrau-network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  mosquitto_data:
+  mosquitto_log:
+
+networks:
+  sistrau-network:
+    driver: bridge

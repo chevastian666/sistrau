@@ -1,7 +1,25 @@
-const Web3 = require('web3');
+// Mock Web3 for local development
+let Web3;
+try {
+  Web3 = require('web3');
+} catch (error) {
+  // Mock Web3 if not installed
+  Web3 = class MockWeb3 {
+    constructor() {
+      this.eth = {
+        accounts: {
+          privateKeyToAccount: () => ({ address: '0x' + 'a'.repeat(40) }),
+          wallet: { add: () => {} }
+        },
+        defaultAccount: null
+      };
+    }
+  };
+}
+
 const crypto = require('crypto');
 const logger = require('../utils/logger');
-const { getDb } = require('../config/database');
+const { getDb, mockDb } = require('../config/database');
 
 // Initialize Web3 connection
 let web3;
@@ -51,21 +69,22 @@ const createBlockchainRecord = async (data) => {
     // 2. Wait for transaction confirmation
     // 3. Return the transaction hash
 
-    // For now, we'll simulate this with a database record
-    const db = getDb();
+    // For now, we'll simulate this with mock data
+    const transaction = {
+      transaction_hash: `0x${hash}`,
+      block_number: Math.floor(Math.random() * 1000000),
+      method_name: 'recordData',
+      reference_type: data.type,
+      reference_id: data.guideId || data.tripId || data.vehicleId,
+      status: 'confirmed',
+      created_at: new Date()
+    };
     
-    // Store in blockchain_transactions table
-    const [transaction] = await db('blockchain_transactions')
-      .insert({
-        transaction_hash: `0x${hash}`,
-        block_number: Math.floor(Math.random() * 1000000), // Simulated block number
-        method_name: 'recordData',
-        reference_type: data.type,
-        reference_id: data.guideId || data.tripId || data.vehicleId,
-        status: 'confirmed',
-        created_at: new Date()
-      })
-      .returning('*');
+    // Store in mock database
+    if (!mockDb.blockchain_transactions) {
+      mockDb.blockchain_transactions = [];
+    }
+    mockDb.blockchain_transactions.push(transaction);
 
     logger.info(`Blockchain record created: ${transaction.transaction_hash}`);
     
@@ -80,12 +99,10 @@ const createBlockchainRecord = async (data) => {
 // Verify data against blockchain record
 const verifyBlockchainRecord = async (transactionHash, data) => {
   try {
-    const db = getDb();
-    
-    // Get transaction from database
-    const transaction = await db('blockchain_transactions')
-      .where({ transaction_hash: transactionHash })
-      .first();
+    // Get transaction from mock database
+    const transaction = mockDb.blockchain_transactions?.find(
+      tx => tx.transaction_hash === transactionHash
+    );
 
     if (!transaction) {
       return { valid: false, reason: 'Transaction not found' };
@@ -114,16 +131,15 @@ const verifyBlockchainRecord = async (transactionHash, data) => {
 // Get blockchain transaction history for a record
 const getBlockchainHistory = async (referenceType, referenceId) => {
   try {
-    const db = getDb();
-    
-    const transactions = await db('blockchain_transactions')
-      .where({
-        reference_type: referenceType,
-        reference_id: referenceId
-      })
-      .orderBy('created_at', 'desc');
+    // Get transactions from mock database
+    const transactions = mockDb.blockchain_transactions?.filter(
+      tx => tx.reference_type === referenceType && tx.reference_id === referenceId
+    ) || [];
 
-    return transactions;
+    // Sort by date descending
+    return transactions.sort((a, b) => 
+      new Date(b.created_at) - new Date(a.created_at)
+    );
 
   } catch (error) {
     logger.error('Failed to get blockchain history:', error);

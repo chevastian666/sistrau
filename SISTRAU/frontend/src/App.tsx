@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { esES } from '@mui/material/locale';
 
 import { store } from './store';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import { fetchCurrentUser } from './store/slices/authSlice';
+import theme from './theme/theme';
 
 // Pages
 import Login from './pages/Login';
@@ -21,23 +21,14 @@ import Tracking from './pages/Tracking';
 import Alerts from './pages/Alerts';
 import Reports from './pages/Reports';
 import Profile from './pages/Profile';
+import Tachograph from './pages/Tachograph';
+import ECMR from './pages/ECMR';
+import WorkingHours from './pages/WorkingHours';
 
 // Components
 import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import LoadingScreen from './components/LoadingScreen';
-
-// Create theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-}, esES);
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -95,6 +86,9 @@ function AppContent() {
           <Route path="alerts" element={<Alerts />} />
           <Route path="reports" element={<Reports />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="tachograph" element={<Tachograph />} />
+          <Route path="ecmr" element={<ECMR />} />
+          <Route path="working-hours" element={<WorkingHours />} />
         </Route>
       </Routes>
     </Router>
