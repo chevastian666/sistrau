@@ -27,6 +27,9 @@ const { initializeMQTT } = require('./config/mqtt');
 // Import services
 const { socketHandler } = require('./services/socketService');
 const { startCronJobs } = require('./services/cronService');
+const gpsSimulator = require('./services/gpsSimulator');
+const tachographSimulator = require('./services/tachographSimulator');
+const ecmrSimulator = require('./services/ecmrSimulator');
 
 // Import routes
 const authRoutes = require('./routes/auth.routes');
@@ -99,6 +102,13 @@ app.use('/api/tachograph', tachographRoutes);
 app.use('/api/ecmr', ecmrRoutes);
 app.use('/api/working-hours', workingHoursRoutes);
 
+// Public API routes (with different versioning)
+const publicApiRoutes = require('./routes/public-api.routes');
+app.use('/api/v1', publicApiRoutes);
+
+// API Documentation
+app.use('/api-docs', express.static(path.join(__dirname, '../docs')));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   logger.error('Error:', err);
@@ -137,6 +147,18 @@ async function startServer() {
     // Start cron jobs
     startCronJobs();
     logger.info('Cron jobs started');
+
+    // Start GPS simulator
+    gpsSimulator.start(5000); // Updates every 5 seconds
+    logger.info('GPS simulator started');
+
+    // Start Tachograph simulator
+    tachographSimulator.start();
+    logger.info('Tachograph simulator started');
+
+    // Start e-CMR simulator
+    ecmrSimulator.start();
+    logger.info('e-CMR simulator started');
 
     // Start server
     server.listen(PORT, () => {

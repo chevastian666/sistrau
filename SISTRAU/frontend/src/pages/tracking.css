@@ -1,0 +1,149 @@
+/* Tracking GPS Styles */
+.vehicle-marker {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.vehicle-marker:hover {
+  transform: scale(1.1);
+}
+
+.mapboxgl-popup {
+  max-width: 300px;
+}
+
+.mapboxgl-popup-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: white;
+}
+
+.tracking-sidebar {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.tracking-controls {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Vehicle status animations */
+@keyframes pulse-active {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blink-alert {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+.vehicle-marker.active {
+  animation: pulse-active 2s infinite;
+}
+
+.vehicle-marker.alert {
+  animation: blink-alert 1s infinite;
+}
+
+/* Custom scrollbar for sidebar */
+.tracking-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tracking-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tracking-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.tracking-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced popup styles */
+.vehicle-popup .mapboxgl-popup-content {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.vehicle-popup .mapboxgl-popup-tip {
+  border-top-color: #ffffff;
+}
+
+/* Real-time indicator */
+.live-indicator {
+  position: relative;
+}
+
+.live-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  width: 8px;
+  height: 8px;
+  background: #4caf50;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: pulse-live 2s infinite;
+}
+
+@keyframes pulse-live {
+  0% {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tracking-sidebar {
+    width: 100% !important;
+    max-width: 320px;
+    position: fixed !important;
+    z-index: 1300;
+    height: 100% !important;
+  }
+  
+  .tracking-controls {
+    position: relative !important;
+    margin-bottom: 1rem;
+    left: 0 !important;
+    top: 0 !important;
+    width: calc(100% - 32px);
+  }
+  
+  .vehicle-marker {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracking-controls h6 {
+    font-size: 1rem;
+  }
+  
+  .tracking-sidebar {
+    max-width: 280px;
+  }
+}

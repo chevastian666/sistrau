@@ -279,7 +279,7 @@ const Tachograph: React.FC = () => {
         {/* Cards de Estado */}
         <Grid container spacing={3} mb={3}>
           {/* Card de Estado Actual */}
-          <Grid item xs={12} md={8}>
+          <Grid item size={{ xs: 12, md: 8 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -336,7 +336,7 @@ const Tachograph: React.FC = () => {
                   
                   <Grid container spacing={2}>
                     {Object.entries(ACTIVITY_LABELS).map(([key, label]) => (
-                      <Grid item xs={6} sm={3} key={key}>
+                      <Grid item size={{ xs: 6, sm: 3 }} key={key}>
                         <motion.div
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
@@ -412,7 +412,7 @@ const Tachograph: React.FC = () => {
           </Grid>
           
           {/* Card de Tiempo de Conducción */}
-          <Grid item xs={12} md={4}>
+          <Grid item size={{ xs: 12, md: 4 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -548,7 +548,7 @@ const Tachograph: React.FC = () => {
               gradient: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)',
             },
           ].map((stat, index) => (
-            <Grid item xs={6} sm={3} key={stat.label}>
+            <Grid item size={{ xs: 6, sm: 3 }} key={stat.label}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -634,7 +634,7 @@ const Tachograph: React.FC = () => {
 
           <TabPanel value={tabValue} index={0}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={5}>
+              <Grid item size={{ xs: 12, md: 5 }}>
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" gutterBottom fontWeight={600}>
                     Distribución de Actividades
@@ -691,7 +691,7 @@ const Tachograph: React.FC = () => {
                 {/* Leyenda personalizada */}
                 <Grid container spacing={2} sx={{ mt: 2 }}>
                   {activityData.map((item, index) => (
-                    <Grid item xs={6} key={index}>
+                    <Grid item size={{ xs: 6 }} key={index}>
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <Box
                           sx={{
@@ -710,7 +710,7 @@ const Tachograph: React.FC = () => {
                 </Grid>
               </Grid>
               
-              <Grid item xs={12} md={7}>
+              <Grid item size={{ xs: 12, md: 7 }}>
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" gutterBottom fontWeight={600}>
                     Análisis de Cumplimiento
@@ -752,7 +752,7 @@ const Tachograph: React.FC = () => {
                       status: driverHours?.totalDriving <= 9 ? 'ok' : 'error' 
                     },
                   ].map((metric, index) => (
-                    <Grid item xs={12} key={index}>
+                    <Grid item size={{ xs: 12 }} key={index}>
                       <Paper
                         sx={{
                           p: 2,
@@ -879,7 +879,7 @@ const Tachograph: React.FC = () => {
             
             {weeklySummary && (
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -956,7 +956,7 @@ const Tachograph: React.FC = () => {
                   </motion.div>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1197,7 +1197,7 @@ const Tachograph: React.FC = () => {
               onChange={(e) => setDownloadForm({ ...downloadForm, cardNumber: e.target.value })}
               placeholder="Ingrese el número de tarjeta"
               InputProps={{
-                startAdornment: <CreditCard sx={{ mr: 1, color: 'action.active' }} />,
+                startAdornment: <CardIcon sx={{ mr: 1, color: 'action.active' }} />,
               }}
             />
             <FormControl fullWidth>

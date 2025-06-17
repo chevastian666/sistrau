@@ -341,7 +341,7 @@ const Vehicles: React.FC = () => {
 
       <Paper sx={{ p: 2, mb: 3 }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <TextField
               fullWidth
               variant="outlined"
@@ -358,7 +358,7 @@ const Vehicles: React.FC = () => {
             />
           </Grid>
           
-          <Grid item xs={12} md={3}>
+          <Grid xs={12} md={3}>
             <FormControl fullWidth>
               <InputLabel>Estado</InputLabel>
               <Select
@@ -375,7 +375,7 @@ const Vehicles: React.FC = () => {
             </FormControl>
           </Grid>
           
-          <Grid item xs={12} md={3}>
+          <Grid xs={12} md={3}>
             <Box display="flex" gap={1}>
               <Button
                 variant={viewMode === 'table' ? 'contained' : 'outlined'}
@@ -400,6 +400,11 @@ const Vehicles: React.FC = () => {
             rows={vehiclesData?.data || []}
             columns={columns}
             loading={isLoading}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 10 },
+              },
+            }}
             pageSizeOptions={[10, 25, 50]}
             checkboxSelection
             disableRowSelectionOnClick
@@ -408,7 +413,7 @@ const Vehicles: React.FC = () => {
       ) : (
         <Grid container spacing={3}>
           {vehiclesData?.data.map((vehicle: Vehicle) => (
-            <Grid item xs={12} sm={6} md={4} key={vehicle.id}>
+            <Grid xs={12} sm={6} md={4} key={vehicle.id}>
               <VehicleCard vehicle={vehicle} />
             </Grid>
           ))}
@@ -424,7 +429,7 @@ const Vehicles: React.FC = () => {
           
           <DialogContent>
             <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="plateNumber"
                   control={control}
@@ -441,7 +446,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="status"
                   control={control}
@@ -459,7 +464,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="brand"
                   control={control}
@@ -475,7 +480,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="model"
                   control={control}
@@ -491,7 +496,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="year"
                   control={control}
@@ -508,7 +513,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
+              <Grid xs={12} sm={6}>
                 <Controller
                   name="type"
                   control={control}
@@ -527,7 +532,7 @@ const Vehicles: React.FC = () => {
                 />
               </Grid>
               
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <Controller
                   name="maxWeightKg"
                   control={control}

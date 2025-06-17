@@ -200,32 +200,32 @@ export const userAPI = {
 // Tachograph endpoints
 export const tachographAPI = {
   createRecord: (data: any) =>
-    api.post('/tachograph/record', data),
+    api.post('/tachograph/record', data).then(res => res.data),
   
   getByVehicle: (vehicleId: string, params?: any) =>
-    api.get(`/tachograph/vehicle/${vehicleId}`, { params }),
+    api.get(`/tachograph/vehicle/${vehicleId}`, { params }).then(res => res.data),
   
   getByDriver: (driverId: string, params?: any) =>
-    api.get(`/tachograph/driver/${driverId}`, { params }),
+    api.get(`/tachograph/driver/${driverId}`, { params }).then(res => res.data),
   
   getDriverHours: (driverId: string, date?: Date) =>
     api.get(`/tachograph/driver/${driverId}/hours`, { 
       params: { date: date?.toISOString() } 
-    }),
+    }).then(res => res.data),
   
   getWeeklySummary: (driverId: string, weekStart?: Date) =>
     api.get(`/tachograph/driver/${driverId}/weekly-summary`, { 
       params: { weekStart: weekStart?.toISOString() } 
-    }),
+    }).then(res => res.data),
   
   downloadData: (data: { cardNumber: string; cardType: string; vehicleId: string }) =>
-    api.post('/tachograph/download', data),
+    api.post('/tachograph/download', data).then(res => res.data),
   
   getViolations: (params?: any) =>
-    api.get('/tachograph/violations', { params }),
+    api.get('/tachograph/violations', { params }).then(res => res.data),
   
   getDriverRecords: (driverId: string, params?: any) =>
-    api.get(`/tachograph/driver/${driverId}`, { params }).then(res => res.data),
+    api.get(`/tachograph/driver/${driverId}/records`, { params }).then(res => res.data),
 };
 
 // e-CMR endpoints
@@ -240,7 +240,7 @@ export const ecmrAPI = {
     api.get(`/ecmr/vehicle/${vehicleId}`, { params }),
   
   getByCompany: (companyId: string, params?: any) =>
-    api.get(`/ecmr/company/${companyId}`, { params }).then(res => res.data),
+    api.get(`/ecmr/company/${companyId}`, { params }).then(res => res.data.data || res.data),
   
   issue: (id: string) =>
     api.post(`/ecmr/${id}/issue`),

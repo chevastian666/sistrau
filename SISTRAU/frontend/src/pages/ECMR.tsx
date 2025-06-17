@@ -106,8 +106,7 @@ const ECMR_STATUS_COLORS = {
   draft: '#757575',
   issued: '#2196F3',
   in_transit: '#FF9800',
-  delivered: '#4CAF50',
-  completed: '#00BCD4',
+  completed: '#4CAF50',
   cancelled: '#F44336',
 };
 
@@ -115,8 +114,7 @@ const ECMR_STATUS_GRADIENTS = {
   draft: 'linear-gradient(135deg, #757575 0%, #9E9E9E 100%)',
   issued: 'linear-gradient(135deg, #2196F3 0%, #21CBF3 100%)',
   in_transit: 'linear-gradient(135deg, #FF9800 0%, #FFB74D 100%)',
-  delivered: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)',
-  completed: 'linear-gradient(135deg, #00BCD4 0%, #26C6DA 100%)',
+  completed: 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)',
   cancelled: 'linear-gradient(135deg, #F44336 0%, #EF5350 100%)',
 };
 
@@ -124,7 +122,6 @@ const ECMR_STATUS_LABELS = {
   draft: 'Borrador',
   issued: 'Emitido',
   in_transit: 'En Tránsito',
-  delivered: 'Entregado',
   completed: 'Completado',
   cancelled: 'Cancelado',
 };
@@ -312,7 +309,7 @@ const ECMR: React.FC = () => {
       case 0:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Descripción de la Carga"
@@ -326,7 +323,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Peso (kg)"
@@ -338,7 +335,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Volumen (m³)"
@@ -350,7 +347,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Número de Bultos"
@@ -359,7 +356,7 @@ const ECMR: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, packages: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Valor Declarado"
@@ -371,7 +368,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -389,7 +386,7 @@ const ECMR: React.FC = () => {
       case 1:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Nombre del Remitente"
@@ -400,7 +397,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Dirección"
@@ -413,7 +410,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="RUT/ID Fiscal"
@@ -421,7 +418,7 @@ const ECMR: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, senderTaxId: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Teléfono de Contacto"
@@ -438,7 +435,7 @@ const ECMR: React.FC = () => {
       case 2:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Nombre del Destinatario"
@@ -449,7 +446,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Dirección de Entrega"
@@ -462,7 +459,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="RUT/ID Fiscal"
@@ -470,7 +467,7 @@ const ECMR: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, receiverTaxId: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Teléfono de Contacto"
@@ -487,7 +484,7 @@ const ECMR: React.FC = () => {
       case 3:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <TextField
                 fullWidth
                 label="Empresa Transportista"
@@ -498,7 +495,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="RUT de la Empresa"
@@ -506,7 +503,7 @@ const ECMR: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, carrierTaxId: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Licencia de Transporte"
@@ -514,7 +511,7 @@ const ECMR: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, carrierLicense: e.target.value })}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="ID del Vehículo"
@@ -525,7 +522,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="ID del Conductor"
@@ -542,7 +539,7 @@ const ECMR: React.FC = () => {
       case 4:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Origen"
@@ -553,7 +550,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Destino"
@@ -564,7 +561,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Distancia Estimada (km)"
@@ -576,7 +573,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Duración Estimada (horas)"
@@ -588,7 +585,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Fecha de Recogida"
@@ -601,7 +598,7 @@ const ECMR: React.FC = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Fecha de Entrega"
@@ -627,7 +624,7 @@ const ECMR: React.FC = () => {
     total: ecmrList?.length || 0,
     inTransit: ecmrList?.filter((e: any) => e.status === 'in_transit').length || 0,
     deliveredToday: ecmrList?.filter((e: any) => 
-      e.status === 'delivered' && 
+      e.status === 'completed' && 
       new Date(e.dates.deliveryActual).toDateString() === new Date().toDateString()
     ).length || 0,
     pendingSignatures: ecmrList?.filter((e: any) => 
@@ -687,7 +684,7 @@ const ECMR: React.FC = () => {
 
         {/* Estadísticas Rápidas */}
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -727,7 +724,7 @@ const ECMR: React.FC = () => {
             </motion.div>
           </Grid>
           
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -770,7 +767,7 @@ const ECMR: React.FC = () => {
             </motion.div>
           </Grid>
           
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -778,9 +775,9 @@ const ECMR: React.FC = () => {
             >
               <Card
                 sx={{
-                  background: ECMR_STATUS_GRADIENTS.delivered,
+                  background: ECMR_STATUS_GRADIENTS.completed,
                   color: 'white',
-                  boxShadow: `0 8px 32px ${alpha(ECMR_STATUS_COLORS.delivered, 0.3)}`,
+                  boxShadow: `0 8px 32px ${alpha(ECMR_STATUS_COLORS.completed, 0.3)}`,
                 }}
               >
                 <CardContent>
@@ -792,7 +789,7 @@ const ECMR: React.FC = () => {
                       </Typography>
                     </Stack>
                     <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                      Entregados Hoy
+                      Completados Hoy
                     </Typography>
                   </Stack>
                 </CardContent>
@@ -800,7 +797,7 @@ const ECMR: React.FC = () => {
             </motion.div>
           </Grid>
           
-          <Grid item xs={6} sm={3}>
+          <Grid size={{ xs: 6, sm: 3 }}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -835,7 +832,7 @@ const ECMR: React.FC = () => {
           {/* Panel de creación */}
           <AnimatePresence>
             {createMode && (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
@@ -953,7 +950,7 @@ const ECMR: React.FC = () => {
           </AnimatePresence>
 
           {/* Lista de e-CMRs */}
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Paper 
               sx={{ 
                 p: 3,
@@ -996,18 +993,18 @@ const ECMR: React.FC = () => {
                       <Card
                         sx={{
                           border: '1px solid',
-                          borderColor: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS], 0.3),
+                          borderColor: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.3),
                           borderRadius: 2,
                           transition: 'all 0.3s ease',
                           '&:hover': {
-                            borderColor: ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS],
-                            boxShadow: `0 8px 24px ${alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS], 0.15)}`,
+                            borderColor: ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft,
+                            boxShadow: `0 8px 24px ${alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.15)}`,
                           },
                         }}
                       >
                         <CardContent>
                           <Grid container spacing={2} alignItems="center">
-                            <Grid item xs={12} md={3}>
+                            <Grid size={{ xs: 12, md: 3 }}>
                               <Stack spacing={1}>
                                 <Stack direction="row" spacing={1} alignItems="center">
                                   <Typography variant="subtitle2" fontWeight={700}>
@@ -1020,20 +1017,20 @@ const ECMR: React.FC = () => {
                                   )}
                                 </Stack>
                                 <Chip
-                                  label={ECMR_STATUS_LABELS[ecmr.status as keyof typeof ECMR_STATUS_LABELS]}
+                                  label={ECMR_STATUS_LABELS[ecmr.status as keyof typeof ECMR_STATUS_LABELS] || 'Desconocido'}
                                   size="small"
                                   sx={{
-                                    background: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS], 0.1),
-                                    color: ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS],
+                                    background: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.1),
+                                    color: ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft,
                                     border: '1px solid',
-                                    borderColor: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS], 0.3),
+                                    borderColor: alpha(ECMR_STATUS_COLORS[ecmr.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.3),
                                     fontWeight: 600,
                                   }}
                                 />
                               </Stack>
                             </Grid>
                             
-                            <Grid item xs={12} md={4}>
+                            <Grid size={{ xs: 12, md: 4 }}>
                               <Stack spacing={0.5}>
                                 <Stack direction="row" spacing={1} alignItems="center">
                                   <LocationIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
@@ -1050,7 +1047,7 @@ const ECMR: React.FC = () => {
                               </Stack>
                             </Grid>
                             
-                            <Grid item xs={12} md={3}>
+                            <Grid size={{ xs: 12, md: 3 }}>
                               <Stack direction="row" spacing={1}>
                                 <AvatarGroup max={4} sx={{ '& .MuiAvatar-root': { width: 32, height: 32, fontSize: 14 } }}>
                                   {ecmr.signatures.map((sig: any, index: number) => (
@@ -1071,7 +1068,7 @@ const ECMR: React.FC = () => {
                               </Stack>
                             </Grid>
                             
-                            <Grid item xs={12} md={2}>
+                            <Grid size={{ xs: 12, md: 2 }}>
                               <Stack direction="row" spacing={1} justifyContent="flex-end">
                                 <Tooltip title="Ver detalles">
                                   <IconButton
@@ -1160,12 +1157,14 @@ const ECMR: React.FC = () => {
                   width: 48,
                   height: 48,
                   borderRadius: 2,
-                  background: ECMR_STATUS_GRADIENTS[selectedECMR?.status as keyof typeof ECMR_STATUS_GRADIENTS],
+                  background: ECMR_STATUS_GRADIENTS[selectedECMR?.status as keyof typeof ECMR_STATUS_GRADIENTS] || ECMR_STATUS_GRADIENTS.draft,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'white',
-                  boxShadow: `0 4px 16px ${alpha(ECMR_STATUS_COLORS[selectedECMR?.status as keyof typeof ECMR_STATUS_COLORS], 0.3)}`,
+                  boxShadow: selectedECMR?.status 
+                    ? `0 4px 16px ${alpha(ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.3)}`
+                    : 'none',
                 }}
               >
                 <DocumentIcon />
@@ -1197,25 +1196,25 @@ const ECMR: React.FC = () => {
             <Stack spacing={3}>
               {/* Estado y verificación */}
               <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <Paper
                     sx={{
                       p: 2,
                       textAlign: 'center',
-                      background: alpha(ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS], 0.05),
+                      background: selectedECMR?.status ? alpha(ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.05) : 'transparent',
                       border: '1px solid',
-                      borderColor: alpha(ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS], 0.2),
+                      borderColor: selectedECMR?.status ? alpha(ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft, 0.2) : 'divider',
                     }}
                   >
                     <Typography variant="overline" color="text.secondary">
                       Estado Actual
                     </Typography>
-                    <Typography variant="h6" fontWeight={600} sx={{ color: ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS] }}>
-                      {ECMR_STATUS_LABELS[selectedECMR.status as keyof typeof ECMR_STATUS_LABELS]}
+                    <Typography variant="h6" fontWeight={600} sx={{ color: selectedECMR?.status ? ECMR_STATUS_COLORS[selectedECMR.status as keyof typeof ECMR_STATUS_COLORS] || ECMR_STATUS_COLORS.draft : 'text.primary' }}>
+                      {selectedECMR?.status ? ECMR_STATUS_LABELS[selectedECMR.status as keyof typeof ECMR_STATUS_LABELS] || 'Desconocido' : '-'}
                     </Typography>
                   </Paper>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <Paper
                     sx={{
                       p: 2,
@@ -1231,7 +1230,7 @@ const ECMR: React.FC = () => {
                     <QrCodeIcon sx={{ fontSize: 48, color: 'info.main' }} />
                   </Paper>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <Paper
                     sx={{
                       p: 2,
@@ -1305,7 +1304,7 @@ const ECMR: React.FC = () => {
                   Detalles del Envío
                 </Typography>
                 <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <Stack spacing={2}>
                       <Box>
                         <Typography variant="caption" color="text.secondary">
@@ -1343,7 +1342,7 @@ const ECMR: React.FC = () => {
                       </Stack>
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <Stack spacing={2}>
                       <Box>
                         <Typography variant="caption" color="text.secondary">
@@ -1387,7 +1386,7 @@ const ECMR: React.FC = () => {
                   {Object.entries(SIGNATURE_TYPE_LABELS).map(([type, label]) => {
                     const signature = selectedECMR.signatures.find((s: any) => s.type === type);
                     return (
-                      <Grid item xs={12} sm={6} key={type}>
+                      <Grid size={{ xs: 12, sm: 6 }} key={type}>
                         <Card
                           variant="outlined"
                           sx={{

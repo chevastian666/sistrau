@@ -42,4 +42,19 @@ const authenticate = async (req, res, next) => {
 // Alias for compatibility
 const authenticateToken = authenticate;
 
-module.exports = { authenticate, authenticateToken };
+// Role authorization middleware
+const authorizeRoles = (allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+    }
+
+    next();
+  };
+};
+
+module.exports = { authenticate, authenticateToken, authorizeRoles };

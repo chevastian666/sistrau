@@ -17,7 +17,15 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["transport", "logistics", "uruguay", "iot"],
+  "keywords": [
+    "transport",
+    "logistics",
+    "uruguay",
+    "iot"
+  ],
   "author": "SISTRAU Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "http-proxy-middleware": "^3.0.5"
+  }
 }

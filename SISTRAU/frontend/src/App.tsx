@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -10,7 +9,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { store } from './store';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
 import { fetchCurrentUser } from './store/slices/authSlice';
-import theme from './theme/theme';
+import { CustomThemeProvider } from './contexts/ThemeContext';
 
 // Pages
 import Login from './pages/Login';
@@ -99,12 +98,12 @@ function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
+        <CustomThemeProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <CssBaseline />
             <AppContent />
           </LocalizationProvider>
-        </ThemeProvider>
+        </CustomThemeProvider>
       </QueryClientProvider>
     </Provider>
   );

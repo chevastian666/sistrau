@@ -1,0 +1,33 @@
+
+> sistrau-backend@1.0.0 start
+> node src/index.js
+
+[32minfo[39m: Vehicle VEH-001 added to GPS simulation {"service":"sistrau","timestamp":"2025-06-17T02:49:35.431Z"}
+[32minfo[39m: Vehicle VEH-002 added to GPS simulation {"service":"sistrau","timestamp":"2025-06-17T02:49:35.434Z"}
+[32minfo[39m: Vehicle VEH-003 added to GPS simulation {"service":"sistrau","timestamp":"2025-06-17T02:49:35.436Z"}
+[33mwarn[39m: Blockchain service not configured, using mock implementation {"service":"sistrau","timestamp":"2025-06-17T02:49:35.848Z"}
+[32minfo[39m: Generated 359 mock tachograph records {"service":"sistrau","timestamp":"2025-06-17T02:49:35.883Z"}
+[32minfo[39m: Using mock database (no PostgreSQL connection) {"service":"sistrau","timestamp":"2025-06-17T02:49:35.909Z"}
+info: Database initialized {"service":"sistrau-backend"}
+[32minfo[39m: Using mock Redis (no Redis connection) {"service":"sistrau","timestamp":"2025-06-17T02:49:35.913Z"}
+info: Redis initialized {"service":"sistrau-backend"}
+[32minfo[39m: Using mock MQTT (no MQTT broker connection) {"service":"sistrau","timestamp":"2025-06-17T02:49:35.916Z"}
+info: MQTT initialized {"service":"sistrau-backend"}
+info: Socket.io service initialized {"service":"sistrau-backend"}
+[32minfo[39m: Cron jobs scheduled successfully {"service":"sistrau","timestamp":"2025-06-17T02:49:35.926Z"}
+info: Cron jobs started {"service":"sistrau-backend"}
+[32minfo[39m: GPS simulator started with 5000ms interval {"service":"sistrau","timestamp":"2025-06-17T02:49:35.926Z"}
+info: GPS simulator started {"service":"sistrau-backend"}
+[32minfo[39m: Generated tachograph schedule for driver user-001 {"service":"sistrau","timestamp":"2025-06-17T02:49:35.927Z"}
+[32minfo[39m: Generated tachograph schedule for driver user-002 {"service":"sistrau","timestamp":"2025-06-17T02:49:35.928Z"}
+[32minfo[39m: Generated tachograph schedule for driver user-003 {"service":"sistrau","timestamp":"2025-06-17T02:49:35.929Z"}
+[32minfo[39m: Tachograph simulator started {"service":"sistrau","timestamp":"2025-06-17T02:49:35.929Z"}
+info: Tachograph simulator started {"service":"sistrau-backend"}
+[32minfo[39m: Starting e-CMR simulator {"service":"sistrau","timestamp":"2025-06-17T02:49:35.929Z"}
+info: e-CMR simulator started {"service":"sistrau-backend"}
+info: SISTRAU Backend running on port 3001 {"service":"sistrau-backend"}
+info: Environment: development {"service":"sistrau-backend"}
+[32minfo[39m: Sample e-CMR data generated {"service":"sistrau","timestamp":"2025-06-17T02:49:36.901Z"}
+[32minfo[39m: Mock working hours data initialized {"service":"sistrau","timestamp":"2025-06-17T02:49:36.911Z"}
+[32minfo[39m: Generating daily statistics... {"service":"sistrau","timestamp":"2025-06-17T05:00:00.026Z"}
+[32minfo[39m: Generated statistics for 0 completed trips {"service":"sistrau","timestamp":"2025-06-17T05:00:00.027Z"}

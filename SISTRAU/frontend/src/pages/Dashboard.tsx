@@ -90,73 +90,114 @@ const StatCard: React.FC<{
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay, type: "spring", stiffness: 100 }}
     >
       <Card 
         sx={{ 
           height: '100%',
-          background: `linear-gradient(135deg, ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.05)} 0%, ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.02)} 100%)`,
+          position: 'relative',
+          overflow: 'hidden',
+          background: theme.palette.background.paper,
           border: '1px solid',
-          borderColor: alpha(theme.palette[color as keyof typeof theme.palette].main, 0.1),
-          transition: 'all 0.3s ease',
+          borderColor: alpha(theme.palette.primary.main, 0.1),
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
             transform: 'translateY(-4px)',
-            boxShadow: `0 12px 24px ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.15)}`,
+            borderColor: alpha(theme.palette[color as keyof typeof theme.palette].main, 0.3),
+            boxShadow: `0 20px 40px ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.2)}`,
+            '& .stat-glow': {
+              opacity: 1,
+            },
+            '& .stat-icon': {
+              transform: 'scale(1.1) rotate(5deg)',
+            },
           },
         }}
       >
-        <CardContent>
+        {/* Glow effect */}
+        <Box
+          className="stat-glow"
+          sx={{
+            position: 'absolute',
+            top: -50,
+            right: -50,
+            width: 150,
+            height: 150,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.2)} 0%, transparent 70%)`,
+            opacity: 0.5,
+            transition: 'opacity 0.3s ease',
+            pointerEvents: 'none',
+          }}
+        />
+        <CardContent sx={{ position: 'relative', zIndex: 1 }}>
           <Box display="flex" justifyContent="space-between" alignItems="flex-start">
             <Box flex={1}>
               <Typography 
                 color="text.secondary" 
-                variant="caption" 
+                variant="overline" 
                 sx={{ 
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: 0.5,
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: 1.2,
+                  opacity: 0.8,
                 }}
               >
                 {title}
               </Typography>
               <Typography 
-                variant="h4" 
+                variant="h3" 
                 sx={{ 
-                  fontWeight: 700,
-                  mt: 1,
+                  fontWeight: 800,
+                  mt: 0.5,
                   mb: 0.5,
                   background: `linear-gradient(135deg, ${theme.palette[color as keyof typeof theme.palette]?.main || theme.palette.primary.main} 0%, ${theme.palette[color as keyof typeof theme.palette]?.light || theme.palette.primary.light} 100%)`,
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  textShadow: `0 0 20px ${alpha(theme.palette[color as keyof typeof theme.palette].main, 0.4)}`,
                 }}
               >
                 {value}
               </Typography>
               {subtitle && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" sx={{ color: 'text.secondary', opacity: 0.7 }}>
                   {subtitle}
                 </Typography>
               )}
               {trend && (
                 <Box display="flex" alignItems="center" mt={1}>
-                  {trend.isPositive ? (
-                    <TrendingUp sx={{ fontSize: 16, color: 'success.main', mr: 0.5 }} />
-                  ) : (
-                    <TrendingDown sx={{ fontSize: 16, color: 'error.main', mr: 0.5 }} />
-                  )}
-                  <Typography 
-                    variant="caption" 
-                    sx={{ 
-                      color: trend.isPositive ? 'success.main' : 'error.main',
-                      fontWeight: 600,
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
+                      backgroundColor: alpha(
+                        trend.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                        0.1
+                      ),
                     }}
                   >
-                    {trend.value}%
-                  </Typography>
+                    {trend.isPositive ? (
+                      <TrendingUp sx={{ fontSize: 14, color: 'success.main', mr: 0.5 }} />
+                    ) : (
+                      <TrendingDown sx={{ fontSize: 14, color: 'error.main', mr: 0.5 }} />
+                    )}
+                    <Typography 
+                      variant="caption" 
+                      sx={{ 
+                        color: trend.isPositive ? 'success.main' : 'error.main',
+                        fontWeight: 700,
+                        fontSize: '0.75rem',
+                      }}
+                    >
+                      {trend.value}%
+                    </Typography>
+                  </Box>
                 </Box>
               )}
             </Box>
@@ -261,44 +302,96 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <Box>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-          <Box>
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                fontWeight: 700,
-                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Bienvenido, {user?.firstName}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
-              {new Date().toLocaleDateString('es-UY', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
-            </Typography>
-          </Box>
-          <IconButton>
-            <MoreVert />
-          </IconButton>
-        </Stack>
-      </motion.div>
+    <Box sx={{ position: 'relative', minHeight: '100vh' }}>
+      {/* Animated background gradient */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '100vh',
+          background: `radial-gradient(ellipse at top left, ${alpha(theme.palette.primary.main, 0.03)} 0%, transparent 50%),
+                      radial-gradient(ellipse at bottom right, ${alpha(theme.palette.secondary.main, 0.03)} 0%, transparent 50%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      
+      <Box sx={{ position: 'relative', zIndex: 1 }}>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+        >
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={4}>
+            <Box>
+              <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+                <Box
+                  sx={{
+                    width: 6,
+                    height: 40,
+                    borderRadius: 1,
+                    background: `linear-gradient(180deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                    boxShadow: `0 0 20px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  }}
+                />
+                <Typography 
+                  variant="h3" 
+                  sx={{ 
+                    fontWeight: 800,
+                    letterSpacing: '-0.02em',
+                    background: `linear-gradient(135deg, ${theme.palette.text.primary} 0%, ${alpha(theme.palette.text.primary, 0.8)} 100%)`,
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  Panel de Control
+                </Typography>
+              </Stack>
+              <Typography variant="body1" sx={{ color: 'text.secondary', opacity: 0.7, ml: 3 }}>
+                Bienvenido de nuevo, {user?.firstName} • {new Date().toLocaleDateString('es-UY', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </Typography>
+            </Box>
+            <Stack direction="row" spacing={1}>
+              <Chip
+                icon={<CheckCircle sx={{ fontSize: 16 }} />}
+                label="Sistema Operativo"
+                size="small"
+                sx={{
+                  backgroundColor: alpha(theme.palette.success.main, 0.1),
+                  color: 'success.main',
+                  borderColor: alpha(theme.palette.success.main, 0.3),
+                  border: '1px solid',
+                  fontWeight: 600,
+                }}
+              />
+              <IconButton
+                sx={{
+                  border: '1px solid',
+                  borderColor: alpha(theme.palette.primary.main, 0.2),
+                  '&:hover': {
+                    borderColor: alpha(theme.palette.primary.main, 0.4),
+                    backgroundColor: alpha(theme.palette.primary.main, 0.05),
+                  },
+                }}
+              >
+                <MoreVert />
+              </IconButton>
+            </Stack>
+          </Stack>
+        </motion.div>
+      </Box>
 
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {isLoading ? (
             <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
           ) : (
@@ -314,7 +407,7 @@ const Dashboard: React.FC = () => {
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {isLoading ? (
             <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
           ) : (
@@ -330,7 +423,7 @@ const Dashboard: React.FC = () => {
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {isLoading ? (
             <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
           ) : (
@@ -346,7 +439,7 @@ const Dashboard: React.FC = () => {
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {isLoading ? (
             <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
           ) : (
@@ -366,7 +459,7 @@ const Dashboard: React.FC = () => {
       {/* Charts */}
       <Grid container spacing={3}>
         {/* Weekly Trips Chart */}
-        <Grid item xs={12} lg={8}>
+        <Grid size={{ xs: 12, lg: 8 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -434,7 +527,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         {/* Performance Gauge */}
-        <Grid item xs={12} lg={4}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -500,7 +593,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         {/* Real-time Vehicle Activity */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -553,7 +646,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         {/* Alerts Distribution */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -615,7 +708,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         {/* Recent Activity */}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

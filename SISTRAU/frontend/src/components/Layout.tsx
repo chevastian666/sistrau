@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -22,6 +22,9 @@ import {
   Chip,
   alpha,
   useTheme,
+  Fade,
+  Paper,
+  LinearProgress,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -41,28 +44,36 @@ import {
   Timer as TimerIcon,
   Description as DocumentIcon,
   AccessTime as WorkingHoursIcon,
+  Security as SecurityIcon,
+  Shield as ShieldIcon,
+  Fingerprint as BiometricIcon,
+  NetworkCheck as NetworkIcon,
+  Brightness4 as DarkModeIcon,
+  Brightness7 as LightModeIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { logout } from '../store/slices/authSlice';
 import { toggleSidebar } from '../store/slices/uiSlice';
+import { useThemeMode } from '../contexts/ThemeContext';
 
 const drawerWidth = 280;
 
 const menuItems = [
-  { title: 'Dashboard', path: '/dashboard', icon: <DashboardIcon />, color: '#1976D2' },
-  { title: 'Vehículos', path: '/vehicles', icon: <VehicleIcon />, color: '#388E3C' },
-  { title: 'Viajes', path: '/trips', icon: <TripIcon />, color: '#F57C00' },
-  { title: 'Tracking', path: '/tracking', icon: <TrackingIcon />, color: '#7B1FA2' },
-  { title: 'Alertas', path: '/alerts', icon: <AlertIcon />, color: '#D32F2F' },
-  { title: 'Tacógrafo', path: '/tachograph', icon: <TimerIcon />, color: '#00BCD4' },
-  { title: 'e-CMR', path: '/ecmr', icon: <DocumentIcon />, color: '#9C27B0' },
-  { title: 'Jornadas', path: '/working-hours', icon: <WorkingHoursIcon />, color: '#FF5722' },
-  { title: 'Reportes', path: '/reports', icon: <ReportIcon />, color: '#0288D1' },
+  { title: 'Dashboard', path: '/dashboard', icon: <DashboardIcon />, color: '#00D4FF', glow: true },
+  { title: 'Vehículos', path: '/vehicles', icon: <VehicleIcon />, color: '#00FF88' },
+  { title: 'Viajes', path: '/trips', icon: <TripIcon />, color: '#FFB800' },
+  { title: 'Tracking GPS', path: '/tracking', icon: <TrackingIcon />, color: '#FF0080', glow: true },
+  { title: 'Alertas', path: '/alerts', icon: <AlertIcon />, color: '#FF3366' },
+  { title: 'Tacógrafo Digital', path: '/tachograph', icon: <TimerIcon />, color: '#00D4FF' },
+  { title: 'e-CMR', path: '/ecmr', icon: <DocumentIcon />, color: '#FF0080' },
+  { title: 'Control Jornadas', path: '/working-hours', icon: <WorkingHoursIcon />, color: '#00FF88' },
+  { title: 'Reportes', path: '/reports', icon: <ReportIcon />, color: '#00D4FF' },
 ];
 
 const Layout: React.FC = () => {
   const theme = useTheme();
+  const { mode, toggleColorMode } = useThemeMode();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -91,9 +102,26 @@ const Layout: React.FC = () => {
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const [systemStatus, setSystemStatus] = useState({
+    connected: true,
+    latency: 12,
+    cpu: 45,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSystemStatus({
+        connected: Math.random() > 0.05,
+        latency: 8 + Math.random() * 20,
+        cpu: 30 + Math.random() * 40,
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const roleColors = {
-    admin: '#1976D2',
-    operator: '#388E3C',
+    admin: '#00D4FF',
+    operator: '#00FF88',
     transporter: '#F57C00',
     authority: '#7B1FA2',
   };
@@ -107,6 +135,29 @@ const Layout: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', bgcolor: 'background.default' }}>
+      {/* System Status Bar */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 3,
+          background: `linear-gradient(90deg, 
+            ${theme.palette.primary.main} 0%, 
+            ${theme.palette.secondary.main} 50%, 
+            ${theme.palette.primary.main} 100%)`,
+          backgroundSize: '200% 100%',
+          animation: 'gradient 3s ease infinite',
+          '@keyframes gradient': {
+            '0%': { backgroundPosition: '0% 50%' },
+            '50%': { backgroundPosition: '100% 50%' },
+            '100%': { backgroundPosition: '0% 50%' },
+          },
+          zIndex: theme.zIndex.drawer + 2,
+        }}
+      />
+      
       <AppBar
         position="fixed"
         elevation={0}
@@ -118,9 +169,10 @@ const Layout: React.FC = () => {
             duration: theme.transitions.duration.leavingScreen,
           }),
           backdropFilter: 'blur(20px)',
-          backgroundColor: alpha(theme.palette.background.paper, 0.8),
+          backgroundColor: alpha(theme.palette.background.default, 0.85),
           borderBottom: '1px solid',
-          borderColor: theme.palette.divider,
+          borderColor: alpha(theme.palette.primary.main, 0.1),
+          top: 3,
         }}
       >
         <Toolbar sx={{ py: 1 }}>
@@ -139,32 +191,116 @@ const Layout: React.FC = () => {
             {sidebarOpen ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
           
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ flexGrow: 1 }}>
-            <LocalShipping sx={{ color: 'primary.main', fontSize: 28 }} />
-            <Typography 
-              variant="h6" 
-              noWrap 
-              sx={{ 
-                fontWeight: 600,
-                color: 'text.primary',
-                display: { xs: 'none', sm: 'block' },
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              SISTRAU
-            </Typography>
-            <Chip 
-              label="v2.0" 
-              size="small" 
-              sx={{ 
-                fontSize: '0.7rem',
-                height: 20,
-                backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                color: 'primary.main',
-              }} 
-            />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.3)} 0%, transparent 70%)`,
+                  animation: 'pulse 2s infinite',
+                  '@keyframes pulse': {
+                    '0%': { transform: 'scale(0.8)', opacity: 1 },
+                    '50%': { transform: 'scale(1.2)', opacity: 0.5 },
+                    '100%': { transform: 'scale(0.8)', opacity: 1 },
+                  },
+                }}
+              />
+              <SecurityIcon sx={{ color: 'primary.main', fontSize: 28, zIndex: 1 }} />
+            </Box>
+            <Stack spacing={0}>
+              <Typography 
+                variant="h6" 
+                noWrap 
+                sx={{ 
+                  fontWeight: 800,
+                  color: 'text.primary',
+                  letterSpacing: '0.05em',
+                  display: { xs: 'none', sm: 'block' },
+                }}
+              >
+                SISTRAU
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '0.65rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  display: { xs: 'none', sm: 'block' },
+                }}
+              >
+                Sistema de Tránsitos Uruguay
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Chip 
+                label="v2.0" 
+                size="small" 
+                sx={{ 
+                  fontSize: '0.65rem',
+                  height: 18,
+                  backgroundColor: alpha(theme.palette.success.main, 0.1),
+                  color: 'success.main',
+                  borderColor: alpha(theme.palette.success.main, 0.3),
+                  border: '1px solid',
+                }} 
+              />
+              <Chip
+                icon={<NetworkIcon sx={{ fontSize: 14 }} />}
+                label={systemStatus.connected ? 'Online' : 'Offline'}
+                size="small"
+                sx={{
+                  fontSize: '0.65rem',
+                  height: 18,
+                  backgroundColor: alpha(
+                    systemStatus.connected ? theme.palette.success.main : theme.palette.error.main,
+                    0.1
+                  ),
+                  color: systemStatus.connected ? 'success.main' : 'error.main',
+                  borderColor: alpha(
+                    systemStatus.connected ? theme.palette.success.main : theme.palette.error.main,
+                    0.3
+                  ),
+                  border: '1px solid',
+                }}
+              />
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '0.7rem',
+                  display: { xs: 'none', md: 'block' },
+                }}
+              >
+                {systemStatus.latency.toFixed(0)}ms
+              </Typography>
+            </Stack>
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
+            <Tooltip title="Sistema bloqueado en modo oscuro">
+              <IconButton
+                sx={{ 
+                  color: 'text.secondary',
+                  cursor: 'default',
+                  opacity: 0.5,
+                }}
+              >
+                <DarkModeIcon />
+              </IconButton>
+            </Tooltip>
+
             <Tooltip title="Centro de ayuda">
               <IconButton
                 sx={{ 
@@ -314,8 +450,10 @@ const Layout: React.FC = () => {
             width: drawerWidth,
             boxSizing: 'border-box',
             backgroundColor: theme.palette.background.paper,
-            borderRight: 'none',
-            boxShadow: '2px 0 8px rgba(0,0,0,0.05)',
+            borderRight: '1px solid',
+            borderColor: alpha(theme.palette.primary.main, 0.1),
+            boxShadow: '0 0 20px rgba(0,212,255,0.05)',
+            overflow: 'hidden',
           },
         }}
         variant="persistent"
@@ -326,31 +464,64 @@ const Layout: React.FC = () => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            padding: 3,
-            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.light} 100%)`,
+            justifyContent: 'space-between',
+            padding: 2,
+            borderBottom: '1px solid',
+            borderColor: alpha(theme.palette.primary.main, 0.1),
+            background: `linear-gradient(135deg, 
+              ${alpha(theme.palette.primary.main, 0.1)} 0%, 
+              ${alpha(theme.palette.primary.dark, 0.05)} 100%)`,
+            backdropFilter: 'blur(10px)',
           }}
         >
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={1.5}>
             <Box
               sx={{
-                width: 48,
-                height: 48,
-                borderRadius: 2,
-                backgroundColor: 'white',
+                position: 'relative',
+                width: 40,
+                height: 40,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               }}
             >
-              <LocalShipping sx={{ fontSize: 28, color: 'primary.main' }} />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: -4,
+                  borderRadius: '50%',
+                  background: `conic-gradient(from 180deg at 50% 50%, 
+                    ${theme.palette.primary.main} 0deg, 
+                    ${theme.palette.secondary.main} 120deg, 
+                    ${theme.palette.primary.main} 240deg, 
+                    ${theme.palette.primary.main} 360deg)`,
+                  animation: 'spin 4s linear infinite',
+                  opacity: 0.3,
+                  '@keyframes spin': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                  },
+                }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '50%',
+                  backgroundColor: theme.palette.background.paper,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ShieldIcon sx={{ fontSize: 24, color: 'primary.main' }} />
+              </Box>
             </Box>
             <Box>
-              <Typography variant="h5" fontWeight={700} color="white">
+              <Typography variant="h6" fontWeight={700} color="text.primary">
                 SISTRAU
               </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.65rem' }}>
                 Control de Tránsitos
               </Typography>
             </Box>
